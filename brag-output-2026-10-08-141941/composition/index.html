@@ -1,0 +1,2052 @@
+<!doctype html>
+<html
+  lang="zh-CN"
+  data-resolution="landscape"
+  data-composition-variables='[
+    {"id":"brandName","type":"string","label":"品牌名（中文）","default":"安见"},
+    {"id":"brandLatin","type":"string","label":"Brand name (Latin)","default":"KINSIGHT"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>安见 Kinsight — brag</title>
+    <script src="assets/vendor/gsap-3.14.2.min.js"></script>
+    <script src="assets/data/audio-data.js"></script>
+    <style>
+      /* Subset fonts (only the glyphs this video uses): Noto Serif SC / Noto Sans SC, SIL OFL */
+      @font-face {
+        font-family: "AnjianSerif";
+        src: url("assets/fonts/noto-serif-sc-400.woff2") format("woff2");
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: "AnjianSerif";
+        src: url("assets/fonts/noto-serif-sc-700.woff2") format("woff2");
+        font-weight: 700;
+      }
+      @font-face {
+        font-family: "AnjianSans";
+        src: url("assets/fonts/noto-sans-sc-400.woff2") format("woff2");
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: "AnjianSans";
+        src: url("assets/fonts/noto-sans-sc-700.woff2") format("woff2");
+        font-weight: 700;
+      }
+
+      :root {
+        --bg: #f3ede3;
+        --ink: #1e2b2a;
+        --muted: #55615e;
+        --accent: #a94c26;
+        --accent-tint: #f4e3d9;
+        --surface: #fffcf7;
+        --card: #f7f1e8;
+        --track: #e6ddcf;
+        --line: #d8cdbd;
+        --sage: #6f8d84;
+        --serif: "AnjianSerif", serif;
+        --sans: "AnjianSans", sans-serif;
+        --mono: "IBM Plex Mono", "AnjianSans", monospace;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg);
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--sans);
+      }
+      em {
+        font-style: normal;
+        color: var(--accent);
+      }
+      .mono {
+        font-family: var(--mono);
+      }
+
+      /* ---------- persistent decor ---------- */
+      #grain {
+        position: absolute;
+        inset: -160px;
+        opacity: 0.5;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.28 0 0 0 0 0.2 0 0 0 0.09 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>");
+      }
+      #glow {
+        position: absolute;
+        left: 920px;
+        top: 40px;
+        width: 1000px;
+        height: 1000px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(169, 76, 38, 0.3) 0%, rgba(169, 76, 38, 0.12) 38%, rgba(169, 76, 38, 0) 64%);
+      }
+      #ring {
+        position: absolute;
+        left: 920px;
+        top: 40px;
+        width: 1000px;
+        height: 1000px;
+      }
+      .bk {
+        position: absolute;
+        width: 56px;
+        height: 56px;
+        border: 0 solid rgba(30, 43, 42, 0.5);
+      }
+      #bkTL {
+        left: 1150px;
+        top: 40px;
+        border-top-width: 5px;
+        border-left-width: 5px;
+      }
+      #bkTR {
+        left: 1634px;
+        top: 40px;
+        border-top-width: 5px;
+        border-right-width: 5px;
+      }
+      #bkBL {
+        left: 1150px;
+        top: 984px;
+        border-bottom-width: 5px;
+        border-left-width: 5px;
+      }
+      #bkBR {
+        left: 1634px;
+        top: 984px;
+        border-bottom-width: 5px;
+        border-right-width: 5px;
+      }
+
+      /* ---------- captions (left column) ---------- */
+      .cap {
+        position: absolute;
+        inset: 0;
+      }
+      .col {
+        position: absolute;
+        left: 140px;
+        top: 0;
+        bottom: 0;
+        width: 940px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 30px;
+      }
+      .kicker {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-family: var(--mono);
+        font-weight: 700;
+        font-size: 28px;
+        letter-spacing: 0.08em;
+        color: var(--accent);
+      }
+      .kdot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex: none;
+      }
+      .hl {
+        font-family: var(--serif);
+        font-weight: 700;
+        font-size: 96px;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+      }
+      .ln {
+        display: block;
+      }
+      .sub {
+        font-family: var(--serif);
+        font-weight: 400;
+        font-size: 56px;
+        line-height: 1.3;
+        color: var(--muted);
+      }
+      .meta {
+        position: absolute;
+        left: 140px;
+        bottom: 60px;
+        font-family: var(--mono);
+        font-size: 22px;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+      }
+
+      /* ---------- hook ---------- */
+      #hook .col {
+        justify-content: flex-start;
+        padding-top: 170px;
+      }
+      #hook .hl {
+        font-size: 136px;
+        line-height: 1.16;
+      }
+      .ruler {
+        position: absolute;
+        left: 140px;
+        right: 140px;
+        top: 700px;
+        height: 240px;
+      }
+      .r-label {
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--ink);
+        display: flex;
+        gap: 18px;
+        align-items: baseline;
+      }
+      .r-label .mono {
+        font-size: 26px;
+        font-weight: 400;
+        color: var(--muted);
+      }
+      .r-bracket {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 64px;
+        height: 24px;
+        border: 3px dashed var(--muted);
+        border-bottom: 0;
+        opacity: 0.7;
+      }
+      .r-line {
+        position: absolute;
+        left: 0;
+        top: 118px;
+        width: 100%;
+        height: 5px;
+        border-radius: 3px;
+        background: var(--ink);
+        transform-origin: left center;
+      }
+      .r-ticks {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 106px;
+        height: 30px;
+      }
+      .r-tick {
+        position: absolute;
+        top: 0;
+        width: 3px;
+        height: 30px;
+        background: var(--ink);
+      }
+      .r-hours {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 156px;
+        height: 34px;
+      }
+      .r-hour {
+        position: absolute;
+        top: 0;
+        width: 120px;
+        margin-left: -60px;
+        text-align: center;
+        font-family: var(--mono);
+        font-size: 26px;
+        color: var(--muted);
+      }
+      .r-head {
+        position: absolute;
+        left: 0;
+        top: 84px;
+        width: 4px;
+        height: 72px;
+        margin-left: -2px;
+        background: var(--accent);
+      }
+      .r-head::before {
+        content: "";
+        position: absolute;
+        left: -9px;
+        top: -12px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      /* ---------- phone ---------- */
+      #phone {
+        position: absolute;
+        left: 1190px;
+        top: 75px;
+        width: 460px;
+        height: 930px;
+      }
+      .bezel {
+        width: 100%;
+        height: 100%;
+        border-radius: 72px;
+        background: var(--ink);
+        padding: 14px;
+        box-shadow: 0 60px 110px rgba(30, 43, 42, 0.26), 0 14px 34px rgba(30, 43, 42, 0.18);
+      }
+      .screen {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 58px;
+        background: var(--surface);
+        overflow: hidden;
+      }
+      .sb {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 36px;
+        font-weight: 700;
+        font-size: 20px;
+        z-index: 5;
+      }
+      .island {
+        position: absolute;
+        left: 157px;
+        top: 12px;
+        width: 118px;
+        height: 34px;
+        border-radius: 18px;
+        background: #121a19;
+      }
+      .sb-ic {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .scr {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 56px;
+        bottom: 0;
+        padding: 14px 24px 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .h1 {
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1.25;
+      }
+      .h2 {
+        font-size: 20px;
+        color: var(--muted);
+        line-height: 1.3;
+      }
+      .app-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .brand-sm {
+        font-family: var(--serif);
+        font-weight: 700;
+        font-size: 32px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .brand-sm i {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+      .pill {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
+        border-radius: 16px;
+        background: var(--accent-tint);
+        font-size: 20px;
+        font-weight: 700;
+      }
+      .recdot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex: none;
+      }
+      .thumbwrap {
+        position: relative;
+        width: 100%;
+        height: 236px;
+        border-radius: 22px;
+        overflow: hidden;
+        background: #e9ddcb;
+      }
+      .thumbwrap svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .ov-badge {
+        position: absolute;
+        left: 14px;
+        top: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 10px;
+        background: var(--accent);
+        color: #fff;
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .ov-badge b {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #fff;
+      }
+      .ov-tc {
+        position: absolute;
+        right: 14px;
+        top: 14px;
+        padding: 5px 10px;
+        border-radius: 10px;
+        background: rgba(18, 26, 25, 0.78);
+        color: #fff;
+        font-family: var(--mono);
+        font-size: 18px;
+      }
+      .ov-cap {
+        position: absolute;
+        left: 14px;
+        bottom: 14px;
+        padding: 5px 10px;
+        border-radius: 10px;
+        background: rgba(18, 26, 25, 0.78);
+        color: #fff;
+        font-size: 17px;
+        font-weight: 700;
+      }
+      .person {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .avatar {
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--serif);
+        font-weight: 700;
+        font-size: 26px;
+        color: #fff;
+        background: var(--sage);
+        flex: none;
+      }
+      .p-name {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .p-sub {
+        font-size: 19px;
+        color: var(--muted);
+      }
+      .plan {
+        padding: 14px 18px;
+        border-radius: 18px;
+        background: var(--card);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .plan-t {
+        font-size: 19px;
+        font-weight: 700;
+        color: var(--muted);
+      }
+      .plan-r {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 21px;
+      }
+      .plan-r .mono {
+        font-size: 18px;
+        color: var(--muted);
+        width: 64px;
+      }
+      .plan-r i {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 2px solid var(--sage);
+      }
+      .full {
+        margin-top: auto;
+        height: 60px;
+        border-radius: 30px;
+        border: 2px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-size: 21px;
+        font-weight: 700;
+      }
+      .full .mono {
+        font-size: 18px;
+        font-weight: 400;
+        color: var(--muted);
+      }
+      .cta {
+        margin-top: auto;
+        height: 64px;
+        border-radius: 32px;
+        background: var(--ink);
+        color: #fff;
+        font-size: 24px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      /* screen B: highlights */
+      .tl {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .tl-track {
+        position: relative;
+        width: 100%;
+        height: 14px;
+        border-radius: 7px;
+        background: var(--track);
+      }
+      .tl-fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 14px;
+        border-radius: 7px;
+        background: #e8c3ae;
+        transform-origin: left center;
+      }
+      .tl-sweep {
+        position: absolute;
+        left: -2px;
+        top: -10px;
+        width: 4px;
+        height: 34px;
+        border-radius: 2px;
+        background: var(--accent);
+      }
+      .tl-mark {
+        position: absolute;
+        top: -5px;
+        width: 24px;
+        height: 24px;
+        margin-left: -12px;
+        border-radius: 50%;
+        background: var(--accent);
+        border: 4px solid var(--surface);
+      }
+      .tl-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 18px;
+        color: var(--muted);
+      }
+      .sec {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .ai {
+        padding: 3px 10px;
+        border-radius: 8px;
+        background: var(--accent);
+        color: #fff;
+        font-family: var(--mono);
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .count {
+        margin-left: auto;
+        padding: 4px 14px;
+        border-radius: 14px;
+        background: var(--ink);
+        color: #fff;
+        font-size: 18px;
+      }
+      .clipcard {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 12px;
+        border-radius: 20px;
+        background: var(--card);
+      }
+      .th {
+        position: relative;
+        width: 128px;
+        height: 92px;
+        border-radius: 14px;
+        overflow: hidden;
+        flex: none;
+      }
+      .th svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .th .play {
+        position: absolute;
+        left: 46px;
+        top: 28px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(18, 26, 25, 0.62);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cc-t {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .cc-s {
+        margin-top: 4px;
+        font-size: 18px;
+        color: var(--muted);
+      }
+      .cc-d {
+        margin-left: auto;
+        font-size: 18px;
+        color: var(--muted);
+      }
+
+      /* screen C: live */
+      .feed {
+        position: relative;
+        width: 100%;
+        height: 300px;
+        border-radius: 22px;
+        overflow: hidden;
+        background: #e9ddcb;
+        flex: none;
+      }
+      .feed svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .chat {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .bubble {
+        max-width: 330px;
+        padding: 14px 18px;
+        border-radius: 22px;
+        font-size: 22px;
+        line-height: 1.35;
+      }
+      .me {
+        align-self: flex-end;
+        background: var(--ink);
+        color: #fff;
+        border-bottom-right-radius: 8px;
+      }
+      .them-row {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+      }
+      .them-row .avatar {
+        width: 42px;
+        height: 42px;
+        font-size: 19px;
+      }
+      .them {
+        background: var(--card);
+        border-bottom-left-radius: 8px;
+      }
+      .typing {
+        display: flex;
+        gap: 7px;
+        padding: 18px 20px;
+      }
+      .typing i {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--muted);
+      }
+      .slot {
+        position: relative;
+        height: 64px;
+      }
+      .slot > * {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+      }
+      .composer {
+        margin-top: auto;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .input {
+        position: relative;
+        flex: 1;
+        height: 60px;
+        border-radius: 30px;
+        background: var(--card);
+        border: 2px solid var(--line);
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        font-size: 21px;
+        overflow: hidden;
+      }
+      .ph {
+        position: absolute;
+        left: 20px;
+        color: var(--muted);
+      }
+      .typed {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+      }
+      .caret {
+        width: 3px;
+        height: 28px;
+        margin-left: 2px;
+        background: var(--accent);
+      }
+      .send {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+      }
+
+      /* screen D: booking */
+      .chips {
+        display: flex;
+        gap: 10px;
+      }
+      .chip {
+        padding: 9px 13px;
+        border-radius: 22px;
+        border: 2px solid var(--line);
+        background: var(--surface);
+        white-space: nowrap;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .cg {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+        border-radius: 22px;
+        background: var(--card);
+        border: 3px solid var(--card);
+      }
+      .stars {
+        display: flex;
+        gap: 3px;
+        margin-top: 6px;
+        align-items: center;
+      }
+      .rev {
+        margin-left: auto;
+        white-space: nowrap;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--muted);
+      }
+      .tap {
+        position: absolute;
+        left: 150px;
+        top: 26px;
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        background: rgba(30, 43, 42, 0.18);
+        border: 3px solid rgba(255, 252, 247, 0.95);
+      }
+      .ripple {
+        position: absolute;
+        left: 137px;
+        top: 13px;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 4px solid var(--accent);
+      }
+      .toast {
+        position: absolute;
+        left: 24px;
+        right: 24px;
+        bottom: 30px;
+        height: 70px;
+        border-radius: 22px;
+        background: var(--ink);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 22px;
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .toast .ok {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+      }
+
+      /* screen E: checkups */
+      .ck {
+        padding: 18px;
+        border-radius: 22px;
+        background: var(--card);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .ck-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .ck-title {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .tag {
+        padding: 4px 12px;
+        border-radius: 12px;
+        background: var(--accent-tint);
+        font-size: 17px;
+        font-weight: 700;
+        color: #8a3d1d;
+      }
+      .ck-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .ck-l {
+        width: 92px;
+        font-size: 19px;
+        color: var(--muted);
+        flex: none;
+      }
+      .bar {
+        position: relative;
+        flex: 1;
+        height: 14px;
+        border-radius: 7px;
+        background: var(--track);
+      }
+      .fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 14px;
+        border-radius: 7px;
+        background: #8d9a96;
+        transform-origin: left center;
+      }
+      .fill.up {
+        background: var(--accent);
+      }
+      .was {
+        position: absolute;
+        top: -5px;
+        width: 4px;
+        height: 24px;
+        margin-left: -2px;
+        border-radius: 2px;
+        background: var(--ink);
+        opacity: 0.55;
+      }
+      .report {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 18px;
+        border-radius: 20px;
+        background: var(--accent);
+        color: #fff;
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .report .ok {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.22);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* ---------- outro ---------- */
+      #outro .lockup {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+      }
+      .wm-row {
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+      }
+      .wm {
+        font-family: var(--serif);
+        font-weight: 700;
+        font-size: 210px;
+        line-height: 1.05;
+        letter-spacing: 0.04em;
+      }
+      .wm-dot {
+        width: 34px;
+        height: 34px;
+        margin-top: 36px;
+        margin-left: 10px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+      .wm-latin {
+        font-family: var(--mono);
+        font-size: 32px;
+        letter-spacing: 0.5em;
+        margin-right: -0.5em;
+        color: var(--muted);
+      }
+      .tagline {
+        margin-top: 26px;
+        font-family: var(--serif);
+        font-weight: 400;
+        font-size: 76px;
+      }
+      .small {
+        font-size: 28px;
+        letter-spacing: 0.24em;
+        margin-right: -0.24em;
+        color: var(--muted);
+      }
+
+      /* ===== 40s version additions ===== */
+      .prob {
+        position: absolute;
+        left: 140px;
+        top: 170px;
+        width: 1640px;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+      #hook .prob .hl {
+        font-size: 136px;
+        line-height: 1.16;
+      }
+      #hook .prob .sub {
+        font-size: 60px;
+      }
+      .r-unseen {
+        position: absolute;
+        left: 16.6667%;
+        right: 0;
+        top: 104px;
+        height: 34px;
+        transform-origin: left center;
+        background: repeating-linear-gradient(135deg, rgba(169, 76, 38, 0.34) 0 7px, rgba(169, 76, 38, 0) 7px 15px);
+      }
+      .r-unseen-l {
+        position: absolute;
+        left: 16.6667%;
+        top: 206px;
+        font-family: var(--mono);
+        font-weight: 700;
+        font-size: 26px;
+        letter-spacing: 0.06em;
+        color: var(--accent);
+      }
+      /* rewatch player */
+      .g-title {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .player {
+        position: relative;
+        width: 100%;
+        height: 300px;
+        border-radius: 22px;
+        overflow: hidden;
+        background: #efe6d8;
+        flex: none;
+      }
+      .player svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .ai-tags {
+        position: absolute;
+        left: 14px;
+        top: 14px;
+        display: flex;
+        gap: 8px;
+      }
+      .ai-tag {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 10px;
+        background: rgba(255, 252, 247, 0.95);
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .ai-tag b {
+        padding: 1px 6px;
+        border-radius: 6px;
+        background: var(--accent);
+        color: #fff;
+        font-family: var(--mono);
+        font-size: 15px;
+      }
+      .pl-time {
+        position: absolute;
+        right: 14px;
+        bottom: 34px;
+        padding: 4px 10px;
+        border-radius: 10px;
+        background: rgba(18, 26, 25, 0.78);
+        color: #fff;
+        font-family: var(--mono);
+        font-size: 17px;
+      }
+      .pl-bar {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        height: 6px;
+        border-radius: 3px;
+        background: rgba(255, 252, 247, 0.6);
+      }
+      .pl-fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--accent);
+        transform-origin: left center;
+      }
+      .pl-knob {
+        position: absolute;
+        left: 0;
+        top: -7px;
+        width: 20px;
+        height: 20px;
+        margin-left: -10px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      }
+      .keys {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .key {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 13px 16px;
+        border-radius: 16px;
+        background: var(--card);
+        font-size: 21px;
+        font-weight: 700;
+      }
+      .key .mono {
+        width: 60px;
+        font-size: 18px;
+        font-weight: 400;
+        color: var(--muted);
+      }
+      .key i {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex: none;
+      }
+      /* caregiver side */
+      .banner {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        top: 2px;
+        z-index: 6;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 16px;
+        border-radius: 20px;
+        background: var(--ink);
+        color: #fff;
+        font-size: 20px;
+        font-weight: 700;
+        white-space: nowrap;
+        box-shadow: 0 14px 30px rgba(30, 43, 42, 0.28);
+      }
+      .banner .bi {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+      }
+      .role {
+        display: inline-flex;
+        padding: 4px 12px;
+        border-radius: 10px;
+        background: #e3ebe8;
+        color: #2f5148;
+        font-size: 17px;
+        font-weight: 700;
+      }
+      .week {
+        display: flex;
+        justify-content: space-between;
+      }
+      .day {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        font-size: 18px;
+        color: var(--muted);
+      }
+      .day i {
+        display: block;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 3px solid var(--line);
+        background: var(--surface);
+      }
+      .day i.on {
+        background: var(--ink);
+        border-color: var(--ink);
+      }
+      .order {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 13px 16px;
+        border-radius: 18px;
+        background: var(--card);
+      }
+      .o-when {
+        width: 70px;
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: var(--mono);
+        font-size: 17px;
+        color: var(--muted);
+      }
+      .o-when b {
+        font-family: var(--sans);
+        font-size: 20px;
+        color: var(--ink);
+      }
+      .o-name {
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .o-sub {
+        font-size: 17px;
+        color: var(--muted);
+      }
+      .o-tag {
+        margin-left: auto;
+        padding: 4px 10px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .o-tag.ok {
+        background: #e3ebe8;
+        color: #2f5148;
+      }
+      .o-tag.nw {
+        background: var(--accent);
+        color: #fff;
+      }
+      /* full-frame scenes */
+      .col3 {
+        position: absolute;
+        left: 140px;
+        top: 140px;
+        width: 1640px;
+        display: flex;
+        flex-direction: column;
+        gap: 26px;
+      }
+      .col3 .hl {
+        font-size: 112px;
+      }
+      .pcards {
+        position: absolute;
+        left: 140px;
+        right: 140px;
+        top: 470px;
+        display: flex;
+        gap: 70px;
+      }
+      .pcard {
+        flex: 1;
+        height: 420px;
+        border-radius: 30px;
+        background: var(--surface);
+        border: 3px solid var(--line);
+        padding: 44px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        box-shadow: 0 30px 60px rgba(30, 43, 42, 0.1);
+      }
+      .pc-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .pc-n {
+        font-family: var(--mono);
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .pc-role {
+        margin-top: 18px;
+        font-family: var(--serif);
+        font-weight: 700;
+        font-size: 76px;
+        line-height: 1.1;
+      }
+      .pc-line {
+        font-size: 34px;
+        line-height: 1.45;
+        color: var(--muted);
+      }
+      .street {
+        position: absolute;
+        left: 140px;
+        right: 140px;
+        top: 640px;
+        height: 300px;
+      }
+      .ground {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 36px;
+        height: 5px;
+        border-radius: 3px;
+        background: var(--ink);
+        transform-origin: left center;
+      }
+      .houses {
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        bottom: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+      .house {
+        width: 124px;
+        height: 150px;
+      }
+      .house svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+        overflow: visible;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="41.5" data-width="1920" data-height="1080">
+      <!-- ===== persistent decor (not clips) ===== -->
+      <div id="grain" data-layout-ignore></div>
+      <div id="glow" data-layout-ignore></div>
+      <svg id="ring" data-layout-ignore viewBox="0 0 1000 1000">
+        <circle cx="500" cy="500" r="472" fill="none" stroke="#1e2b2a" stroke-opacity="0.22" stroke-width="3" stroke-dasharray="3 16" />
+        <circle cx="500" cy="500" r="430" fill="none" stroke="#a94c26" stroke-opacity="0.18" stroke-width="2" />
+      </svg>
+      <div class="bk" id="bkTL" data-layout-ignore></div>
+      <div class="bk" id="bkTR" data-layout-ignore></div>
+      <div class="bk" id="bkBL" data-layout-ignore></div>
+      <div class="bk" id="bkBR" data-layout-ignore></div>
+
+      <!-- ===== Scene 1: hook ===== -->
+      <section id="hook" class="clip" data-start="0" data-duration="6.7" data-track-index="1">
+        <div class="col">
+          <h1 class="hl"><span class="ln" id="h1a">你不可能</span><span class="ln" id="h1b"><em>每次</em>都在场。</span></h1>
+        </div>
+        <div class="prob">
+          <h1 class="hl" id="hP">离开之后，</h1>
+          <p class="sub" id="sP">洗澡认真吗？饭菜用心吗？</p>
+        </div>
+        <div class="ruler" id="ruler">
+          <div class="r-label" id="rLabel">妈妈的上门照护<span class="mono">09:00–15:00 · 6 小时</span></div>
+          <div class="r-bracket" id="rBracket"></div>
+          <div class="r-line" id="rLine"></div>
+          <div class="r-ticks" id="rTicks"></div>
+          <div class="r-unseen" id="rUnseen" data-layout-ignore></div>
+          <div class="r-hours" id="rHours"></div>
+          <div class="r-unseen-l" id="rUnseenL">你看不见的 5 个小时</div>
+          <div class="r-head" id="rHead"></div>
+        </div>
+      </section>
+
+      <!-- ===== Scene 2 caption: reveal ===== -->
+      <section id="cap2" class="cap clip" data-start="6.5" data-duration="3.45" data-track-index="2">
+        <div class="col">
+          <div class="kicker" id="k2"><span class="kdot"></span><span><span class="bn">安见</span> <span class="bl">KINSIGHT</span> · 持牌上门养老服务</span></div>
+          <h1 class="hl"><span class="ln" id="h2a">现在，</span><span class="ln" id="h2b">每一次都<em>看得见</em>。</span></h1>
+        </div>
+        <div class="meta" id="m2">01 / 07 · 上门照护全程录制</div>
+      </section>
+
+      <!-- ===== Scene 3 caption: AI highlights ===== -->
+      <section id="cap3" class="cap clip" data-start="9.8" data-duration="3.95" data-track-index="3">
+        <div class="col">
+          <div class="kicker" id="k3"><span class="kdot"></span>AI 关键片段</div>
+          <h1 class="hl" id="h3">几个小时的照护，</h1>
+          <p class="sub" id="s3">AI 自动剪出关键时刻。</p>
+        </div>
+        <div class="meta" id="m3">02 / 07 · 不用看完几个小时的录像</div>
+      </section>
+
+      <!-- ===== Scene 5 caption: rewatch ===== -->
+      <section id="capR" class="cap clip" data-start="13.6" data-duration="3.4" data-track-index="11">
+        <div class="col">
+          <div class="kicker" id="kR"><span class="kdot"></span>随时回看</div>
+          <h1 class="hl" id="hR">重点片段，</h1>
+          <p class="sub" id="sR">饭有没有好好做，一看就知道。</p>
+        </div>
+        <div class="meta" id="mR">03 / 07 · AI 标出每段的关键画面</div>
+      </section>
+
+      <!-- ===== Scene 4 caption: live ===== -->
+      <section id="cap4" class="cap clip" data-start="16.9" data-duration="3.4" data-track-index="4">
+        <div class="col">
+          <div class="kicker" id="k4"><span class="kdot"></span>实时直播</div>
+          <h1 class="hl" id="h4">实时观看，</h1>
+          <p class="sub" id="s4">随时叮嘱护理员。</p>
+        </div>
+        <div class="meta" id="m4">04 / 07 · 远程也能说上话</div>
+      </section>
+
+      <!-- ===== Scene 5 caption: booking ===== -->
+      <section id="cap5" class="cap clip" data-start="20.15" data-duration="3.35" data-track-index="5">
+        <div class="col">
+          <div class="kicker" id="k5"><span class="kdot"></span>自主预约</div>
+          <h1 class="hl" id="h5">护理员你来选，</h1>
+          <p class="sub" id="s5">时间你来定，不绑定。</p>
+        </div>
+        <div class="meta" id="m5">05 / 07 · 看评价，再预约</div>
+      </section>
+
+      <!-- ===== Scene 6 caption: checkups ===== -->
+      <section id="cap6" class="cap clip" data-start="23.42" data-duration="3.4" data-track-index="6">
+        <div class="col">
+          <div class="kicker" id="k6"><span class="kdot"></span>免费体检</div>
+          <h1 class="hl" id="h6">第一天，免费体检。</h1>
+          <p class="sub" id="s6">再测一次，进步看得见。</p>
+        </div>
+        <div class="meta" id="m6">06 / 07 · 前后对比</div>
+      </section>
+
+      <!-- ===== Scene 9 caption: caregivers ===== -->
+      <section id="capC" class="cap clip" data-start="26.7" data-duration="3.25" data-track-index="12">
+        <div class="col">
+          <div class="kicker" id="kC"><span class="kdot"></span>护理员</div>
+          <h1 class="hl" id="hC">订单更多，</h1>
+          <p class="sub" id="sC">收入也更多。</p>
+        </div>
+        <div class="meta" id="mC">07 / 07 · 需求由平台统一分发</div>
+      </section>
+
+      <!-- ===== Phone (fixed anchor, scenes 3-9) ===== -->
+      <div id="phone" class="clip" data-start="6.5" data-duration="23.6" data-track-index="7">
+        <div class="bezel" id="bezel">
+          <div class="screen">
+            <div class="sb"><span class="mono">9:41</span><span class="sb-ic"><svg width="22" height="14" viewBox="0 0 22 14"><rect x="0" y="9" width="4" height="5" rx="1" fill="#1e2b2a" /><rect x="6" y="6" width="4" height="8" rx="1" fill="#1e2b2a" /><rect x="12" y="3" width="4" height="11" rx="1" fill="#1e2b2a" /><rect x="18" y="0" width="4" height="14" rx="1" fill="#1e2b2a" /></svg><svg width="30" height="15" viewBox="0 0 30 15"><rect x="1" y="1" width="25" height="13" rx="4" fill="none" stroke="#1e2b2a" stroke-width="2" /><rect x="4" y="4" width="17" height="7" rx="2" fill="#1e2b2a" /><rect x="27" y="5" width="2" height="5" rx="1" fill="#1e2b2a" /></svg></span></div>
+            <div class="island"></div>
+
+            <!-- Screen A: visit in progress -->
+            <div class="scr" id="scrA">
+              <div class="app-head a-in"><span class="brand-sm"><span class="bn">安见</span><i></i></span><svg width="30" height="30" viewBox="0 0 24 24"><path d="M6 17V11a6 6 0 0 1 12 0v6l2 2H4z M10 21h4" fill="none" stroke="#1e2b2a" stroke-width="2" stroke-linejoin="round" /></svg></div>
+              <div class="a-in"><div class="h1">妈妈 · 上门照护中</div><div class="h2 mono">今天 09:00 – 15:00</div></div>
+              <div class="thumbwrap a-in" id="thumbA">
+                <div class="ov-badge"><b></b>直播</div>
+                <div class="ov-tc" id="tcA">09:42:15</div>
+              </div>
+              <div class="pill a-in"><span class="recdot"></span>录制中 · 随身摄像头已开启</div>
+              <div class="person a-in"><div class="avatar">张</div><div><div class="p-name">张阿姨</div><div class="p-sub">今日护理员</div></div></div>
+              <div class="plan a-in"><div class="plan-t">今日照护计划</div><div class="plan-r"><span class="mono">09:00</span><i></i>服药</div><div class="plan-r"><span class="mono">12:00</span><i></i>午餐</div><div class="plan-r"><span class="mono">14:30</span><i></i>洗澡</div></div>
+              <div class="cta a-in"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="#fffcf7" /></svg>观看直播</div>
+            </div>
+
+            <!-- Screen B: AI highlights -->
+            <div class="scr" id="scrB">
+              <div class="b-in"><div class="h1">今天 · 妈妈</div><div class="h2">已录制 6 小时 · 张阿姨陪护</div></div>
+              <div class="tl b-in">
+                <div class="tl-track" id="tlTrack">
+                  <div class="tl-fill" id="tlFill"></div>
+                  <div class="tl-mark" id="mk1" style="left: 3.3%"></div>
+                  <div class="tl-mark" id="mk2" style="left: 51.4%"></div>
+                  <div class="tl-mark" id="mk3" style="left: 94.4%"></div>
+                  <div class="tl-sweep" id="tlSweep"></div>
+                </div>
+                <div class="tl-labels mono"><span>09:00</span><span>12:00</span><span>15:00</span></div>
+              </div>
+              <div class="sec b-in"><span class="ai">AI</span>关键时刻<span class="count" id="count">3 个片段</span></div>
+              <div class="clipcard" id="cc1">
+                <div class="th">
+                  <svg viewBox="0 0 128 92"><rect width="128" height="92" fill="#eadfcf" /><rect x="14" y="40" width="100" height="34" rx="8" fill="#fffcf7" stroke="#cdbda5" stroke-width="3" /><path d="M39 40v34M64 40v34M89 40v34" stroke="#cdbda5" stroke-width="2" /><rect x="21" y="52" width="12" height="7" rx="3.5" fill="#a94c26" /><rect x="46" y="54" width="12" height="7" rx="3.5" fill="#6f8d84" /><circle cx="77" cy="57" r="5" fill="#d9b25c" /><rect x="96" y="52" width="12" height="7" rx="3.5" fill="#a94c26" /><path d="M100 12h14l-2 24h-10z" fill="#cfe1e6" stroke="#9db8c0" stroke-width="2" /></svg>
+                  <div class="play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="#fff" /></svg></div>
+                </div>
+                <div><div class="cc-t">早上服药</div><div class="cc-s mono">09:12</div></div>
+                <div class="cc-d mono">0:42</div>
+              </div>
+              <div class="clipcard" id="cc2" style="position: relative"><div class="ripple" id="rippleB" style="left: 187px; top: 17px"></div><div class="tap" id="tapB" style="left: 200px; top: 30px"></div>
+                <div class="th">
+                  <svg viewBox="0 0 128 92"><rect width="128" height="92" fill="#e7dccb" /><ellipse cx="64" cy="62" rx="50" ry="18" fill="#fffcf7" stroke="#d8cdbd" stroke-width="2" /><path d="M38 52a26 13 0 0 0 52 0z" fill="#fffcf7" stroke="#cdbda5" stroke-width="2" /><ellipse cx="64" cy="52" rx="26" ry="7" fill="#e3a45c" /><circle cx="56" cy="51" r="3" fill="#6f8d84" /><circle cx="68" cy="53" r="3" fill="#6f8d84" /><circle cx="74" cy="50" r="2.5" fill="#f2d39a" /><path d="M54 36c-4-6 4-8 0-14M66 36c-4-6 4-8 0-14M78 36c-4-6 4-8 0-14" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" /></svg>
+                  <div class="play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="#fff" /></svg></div>
+                </div>
+                <div><div class="cc-t">午餐 · 现做</div><div class="cc-s mono">12:05</div></div>
+                <div class="cc-d mono">1:10</div>
+              </div>
+              <div class="clipcard" id="cc3">
+                <div class="th">
+                  <svg viewBox="0 0 128 92"><rect width="128" height="92" fill="#dde4e2" /><path d="M0 30h128M0 60h128M32 0v92M64 0v92M96 0v92" stroke="#c9d3d1" stroke-width="2" /><path d="M86 8v14h-14" fill="none" stroke="#7d8a88" stroke-width="5" stroke-linecap="round" /><path d="M60 22h24l-4 8H64z" fill="#7d8a88" /><path d="M66 38l-4 10M74 38l0 12M82 38l4 10M70 54l-3 9M78 54l3 9" stroke="#8fb5c4" stroke-width="3" stroke-linecap="round" /><rect x="14" y="44" width="10" height="34" rx="5" fill="#a5afad" /><rect x="22" y="70" width="40" height="8" rx="4" fill="#a5afad" /></svg>
+                  <div class="play"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="#fff" /></svg></div>
+                </div>
+                <div><div class="cc-t">协助洗澡</div><div class="cc-s mono">14:40</div></div>
+                <div class="cc-d mono">0:55</div>
+              </div>
+              <div class="full" id="fullRec">完整录像<span class="mono">6:00:00</span></div>
+            </div>
+
+            <!-- Screen C: live -->
+            <div class="scr" id="scrC">
+              <div class="app-head c-in"><div class="h1">妈妈 · 实时画面</div></div>
+              <div class="feed c-in" id="feed">
+                <svg id="feedSvg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+                  <defs>
+                    <radialGradient id="vig" cx="50%" cy="50%" r="70%">
+                      <stop offset="55%" stop-color="#121a19" stop-opacity="0" />
+                      <stop offset="100%" stop-color="#121a19" stop-opacity="0.42" />
+                    </radialGradient>
+                    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0" stop-color="#f1e7d7" />
+                      <stop offset="1" stop-color="#e2d3bd" />
+                    </linearGradient>
+                  </defs>
+                  <rect width="400" height="300" fill="url(#wall)" />
+                  <rect x="30" y="26" width="112" height="124" rx="4" fill="#fbf6ec" stroke="#cdbda5" stroke-width="7" />
+                  <path d="M86 26v124M30 88h112" stroke="#cdbda5" stroke-width="5" />
+                  <path d="M142 40L230 250H150L60 150z" fill="#fff8ea" opacity="0.45" />
+                  <rect x="288" y="40" width="74" height="56" rx="3" fill="#d6c0a2" stroke="#8e7b63" stroke-width="4" />
+                  <path d="M296 88l18-22 14 14 10-8 16 16z" fill="#8f9f86" />
+                  <rect x="40" y="134" width="30" height="20" rx="3" fill="#b98a6a" />
+                  <ellipse cx="50" cy="126" rx="10" ry="16" fill="#7e9c7a" transform="rotate(-20 50 126)" />
+                  <ellipse cx="62" cy="122" rx="9" ry="17" fill="#6f8d6c" transform="rotate(18 62 122)" />
+                  <rect x="176" y="150" width="108" height="120" rx="26" fill="#b98a6a" />
+                  <path d="M168 300c2-56 18-90 62-94 44 4 60 38 62 94z" fill="#7f9c93" />
+                  <path d="M214 208l16 30 16-30z" fill="#f6efe4" />
+                  <rect x="221" y="186" width="18" height="24" fill="#e2b999" />
+                  <ellipse cx="230" cy="166" rx="30" ry="34" fill="#ebc6a6" />
+                  <ellipse cx="230" cy="142" rx="33" ry="19" fill="#d8d4ce" />
+                  <ellipse cx="200" cy="158" rx="7" ry="16" fill="#d8d4ce" />
+                  <ellipse cx="260" cy="158" rx="7" ry="16" fill="#d8d4ce" />
+                  <circle cx="230" cy="120" r="14" fill="#cfcac3" />
+                  <circle cx="219" cy="169" r="8.5" fill="none" stroke="#6b5a4e" stroke-width="2" />
+                  <circle cx="241" cy="169" r="8.5" fill="none" stroke="#6b5a4e" stroke-width="2" />
+                  <path d="M227.5 169h5" stroke="#6b5a4e" stroke-width="2" />
+                  <circle cx="219" cy="169" r="1.8" fill="#4a3b32" />
+                  <circle cx="241" cy="169" r="1.8" fill="#4a3b32" />
+                  <circle cx="212" cy="181" r="5" fill="#e7a88e" opacity="0.55" />
+                  <circle cx="248" cy="181" r="5" fill="#e7a88e" opacity="0.55" />
+                  <path d="M221 186q9 7 18 0" stroke="#a0644e" stroke-width="2.5" fill="none" stroke-linecap="round" />
+                  <rect x="0" y="248" width="400" height="52" fill="#efe3d1" />
+                  <path d="M0 248h400" stroke="#d8cdbd" stroke-width="3" />
+                  <ellipse cx="200" cy="262" rx="15" ry="8" fill="#ebc6a6" />
+                  <ellipse cx="262" cy="262" rx="15" ry="8" fill="#ebc6a6" />
+                  <ellipse cx="128" cy="262" rx="44" ry="11" fill="#fffcf7" stroke="#d8cdbd" stroke-width="2" />
+                  <path d="M92 258a36 22 0 0 0 72 0z" fill="#fffcf7" stroke="#cdbda5" stroke-width="2" />
+                  <ellipse cx="128" cy="258" rx="36" ry="8" fill="#e3a45c" />
+                  <circle cx="118" cy="257" r="3.5" fill="#6f8d84" />
+                  <circle cx="134" cy="259" r="3.5" fill="#6f8d84" />
+                  <circle cx="142" cy="256" r="3" fill="#f2d39a" />
+                  <path class="steam" d="M114 240c-5-8 5-10 0-18" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.75" />
+                  <path class="steam" d="M128 240c-5-8 5-10 0-18" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.75" />
+                  <path class="steam" d="M142 240c-5-8 5-10 0-18" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.75" />
+                  <g id="glass" opacity="0">
+                    <path d="M312 204h40l-5 66h-30z" fill="#e4f0f3" fill-opacity="0.75" stroke="#9db8c0" stroke-width="2.5" />
+                    <path d="M315 226h34l-3.5 44h-27z" fill="#a9cfdc" fill-opacity="0.8" />
+                    <path d="M320 212l-2 50" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0.8" />
+                  </g>
+                  <rect width="400" height="300" fill="url(#vig)" />
+                </svg>
+                <div class="ov-badge"><b class="recdot2"></b>直播</div>
+                <div class="ov-tc" id="tcC">11:42:08</div>
+                <div class="ov-cap">随身摄像头 · 张阿姨</div>
+              </div>
+              <div class="chat">
+                <div class="bubble me" id="msgMe">请提醒妈妈多喝点水。</div>
+                <div class="slot">
+                  <div class="them-row" id="typing"><div class="avatar">张</div><div class="bubble them typing"><i></i><i></i><i></i></div></div>
+                  <div class="them-row" id="reply"><div class="avatar">张</div><div class="bubble them">好的，马上去倒水。</div></div>
+                </div>
+              </div>
+              <div class="composer c-in">
+                <div class="input"><span class="ph" id="ph">给张阿姨留言…</span><span class="typed" id="typed"></span><span class="caret" id="caret"></span></div>
+                <div class="send"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+              </div>
+            </div>
+
+            <!-- Screen D: booking -->
+            <div class="scr" id="scrD">
+              <div class="d-in"><div class="h1">选择护理员</div><div class="h2">妈妈 · 上门照护</div></div>
+              <div class="chips d-in"><span class="chip" id="chip1">周二 9:00</span><span class="chip">周三 14:00</span><span class="chip">周五 10:00</span></div>
+              <div class="cg" id="g1">
+                <div class="avatar">张</div>
+                <div><div class="p-name">张阿姨</div><div class="stars"></div></div>
+                <div class="rev">查看评价 ›</div>
+                <div class="ripple" id="ripple"></div>
+                <div class="tap" id="tap"></div>
+              </div>
+              <div class="cg" id="g2">
+                <div class="avatar" style="background: #b4795c">陈</div>
+                <div><div class="p-name">陈阿姨</div><div class="stars"></div></div>
+                <div class="rev">查看评价 ›</div>
+              </div>
+              <div class="cg" id="g3">
+                <div class="avatar" style="background: #55615e">李</div>
+                <div><div class="p-name">李师傅</div><div class="stars"></div></div>
+                <div class="rev">查看评价 ›</div>
+              </div>
+              <div class="toast" id="toast"><span class="ok"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg></span>预约成功 · 周二 9:00</div>
+            </div>
+
+            <!-- Screen G: rewatch a clip -->
+            <div class="scr" id="scrG">
+              <div class="app-head g-in"><div class="g-title"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="#55615e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg><span class="h1">午餐 · 现做</span></div><span class="h2 mono">12:05</span></div>
+              <div class="player g-in">
+                <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><rect width="400" height="300" fill="#efe6d8" /><path d="M0 50h400M0 100h400M0 150h400M50 0v186M130 0v186M210 0v186M290 0v186M370 0v186" stroke="#e2d6c4" stroke-width="3" /><path d="M300 0h100v130z" fill="#fff8ea" opacity="0.55" /><rect x="0" y="186" width="400" height="114" fill="#d9c3a5" /><rect x="0" y="186" width="400" height="9" fill="#c4ab8a" /><rect x="232" y="174" width="148" height="14" rx="4" fill="#55615e" /><path d="M252 122h108v40a14 14 0 0 1-14 14h-80a14 14 0 0 1-14-14z" fill="#6f8d84" /><rect x="244" y="112" width="124" height="13" rx="6" fill="#5f7c73" /><rect x="294" y="100" width="24" height="10" rx="5" fill="#4a5f58" /><path d="M240 138h-14M372 138h14" stroke="#4a5f58" stroke-width="7" stroke-linecap="round" /><path class="steam" d="M282 98c-6-10 6-12 0-22" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.8" /><path class="steam" d="M306 98c-6-10 6-12 0-22" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.8" /><path class="steam" d="M330 98c-6-10 6-12 0-22" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.8" /><rect x="30" y="206" width="182" height="54" rx="10" fill="#e8d2ae" stroke="#c9ae84" stroke-width="3" /><circle cx="66" cy="228" r="10" fill="#e39a4b" /><circle cx="66" cy="228" r="4" fill="#f0b878" /><circle cx="88" cy="236" r="10" fill="#e39a4b" /><circle cx="88" cy="236" r="4" fill="#f0b878" /><circle cx="110" cy="226" r="10" fill="#e39a4b" /><circle cx="110" cy="226" r="4" fill="#f0b878" /><ellipse cx="150" cy="226" rx="17" ry="9" fill="#7e9c7a" transform="rotate(-20 150 226)" /><ellipse cx="174" cy="238" rx="15" ry="8" fill="#6f8d6c" transform="rotate(14 174 238)" /><path d="M118 252l74-14 2 8-72 12z" fill="#d5dbda" stroke="#9aa5a3" stroke-width="1.5" /><path d="M0 300V262c34-8 64-6 86 4l12 34z" fill="#55615e" /><ellipse cx="102" cy="260" rx="21" ry="12" fill="#e2b999" transform="rotate(-12 102 260)" /><rect width="400" height="300" fill="url(#vig)" /></svg>
+                <div class="ai-tags"><div class="ai-tag" id="tag1"><b>AI</b>新鲜食材</div><div class="ai-tag" id="tag2"><b>AI</b>现场烹饪</div></div>
+                <div class="pl-time" id="plTime">0:08 / 1:10</div>
+                <div class="pl-bar"><div class="pl-fill" id="plFill"></div><div class="pl-knob" id="plKnob"></div></div>
+              </div>
+              <div class="sec g-in"><span class="ai">AI</span>关键画面</div>
+              <div class="keys">
+                <div class="key" id="key1"><span class="mono">12:05</span><i></i>备菜 · 新鲜蔬菜</div>
+                <div class="key" id="key2"><span class="mono">12:18</span><i></i>下锅烹饪</div>
+                <div class="key" id="key3"><span class="mono">12:31</span><i></i>陪妈妈吃午饭</div>
+              </div>
+            </div>
+
+            <!-- Screen F: caregiver side -->
+            <div class="scr" id="scrF">
+              <div class="banner" id="banner" data-layout-allow-occlusion data-layout-allow-overlap><span class="bi"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M6 17V11a6 6 0 0 1 12 0v6l2 2H4z M10 21h4" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" /></svg></span>新订单 · 周三 14:00 · 刘爷爷</div>
+              <div class="f-in" style="margin-bottom: 12px"><span class="role">护理员端</span></div>
+              <div class="f-in"><div class="h1">张阿姨的本周订单</div><div class="h2">平台统一分发订单</div></div>
+              <div class="week f-in">
+                <div class="day"><i></i>一</div><div class="day"><i class="on"></i>二</div><div class="day"><i id="d3"></i>三</div><div class="day"><i></i>四</div><div class="day"><i class="on"></i>五</div><div class="day"><i id="d6"></i>六</div><div class="day"><i></i>日</div>
+              </div>
+              <div class="order f-in"><div class="o-when"><b>周二</b>09:00</div><div><div class="o-name">王奶奶</div><div class="o-sub">上门照护 · 3 小时</div></div><span class="o-tag ok">已确认</span></div>
+              <div class="order f-in"><div class="o-when"><b>周五</b>10:00</div><div><div class="o-name">陈奶奶</div><div class="o-sub">上门照护 · 4 小时</div></div><span class="o-tag ok">已确认</span></div>
+              <div class="order" id="o3"><div class="o-when"><b>周三</b>14:00</div><div><div class="o-name">刘爷爷</div><div class="o-sub">上门照护 · 3 小时</div></div><span class="o-tag nw">新订单</span></div>
+              <div class="order" id="o4"><div class="o-when"><b>周六</b>09:00</div><div><div class="o-name">赵奶奶</div><div class="o-sub">上门照护 · 2 小时</div></div><span class="o-tag nw">新订单</span></div>
+            </div>
+
+            <!-- Screen E: checkups -->
+            <div class="scr" id="scrE">
+              <div class="e-in"><div class="h1">健康体检</div><div class="h2">妈妈 · 体检记录</div></div>
+              <div class="ck e-in" id="ck1">
+                <div class="ck-top"><span class="ck-title">第 1 次体检</span><span class="tag">免费 · 第 1 天</span></div>
+                <div class="ck-row"><span class="ck-l">血压</span><div class="bar"><div class="fill f1" style="width: 46%"></div></div></div>
+                <div class="ck-row"><span class="ck-l">行动能力</span><div class="bar"><div class="fill f1" style="width: 38%"></div></div></div>
+                <div class="ck-row"><span class="ck-l">营养</span><div class="bar"><div class="fill f1" style="width: 50%"></div></div></div>
+                <div class="ck-row"><span class="ck-l">情绪</span><div class="bar"><div class="fill f1" style="width: 42%"></div></div></div>
+              </div>
+              <div class="ck" id="ck2">
+                <div class="ck-top"><span class="ck-title">第 2 次体检</span><span class="tag">复查</span></div>
+                <div class="ck-row"><span class="ck-l">血压</span><div class="bar"><div class="fill up f2" style="width: 68%"></div><div class="was" style="left: 46%"></div></div></div>
+                <div class="ck-row"><span class="ck-l">行动能力</span><div class="bar"><div class="fill up f2" style="width: 62%"></div><div class="was" style="left: 38%"></div></div></div>
+                <div class="ck-row"><span class="ck-l">营养</span><div class="bar"><div class="fill up f2" style="width: 76%"></div><div class="was" style="left: 50%"></div></div></div>
+                <div class="ck-row"><span class="ck-l">情绪</span><div class="bar"><div class="fill up f2" style="width: 70%"></div><div class="was" style="left: 42%"></div></div></div>
+              </div>
+              <div class="report" id="report"><span class="ok"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg></span>进步报告已生成</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Scene 10: three parties ===== -->
+      <section id="three" class="clip" data-start="29.95" data-duration="4.5" data-track-index="9">
+        <div class="col3">
+          <div class="kicker" id="k10"><span class="kdot"></span>一个平台</div>
+          <h1 class="hl" id="h10">三方都受益。</h1>
+        </div>
+        <div class="pcards">
+          <div class="pcard" id="pc1"><div class="pc-top"><span class="pc-n">01</span><svg width="64" height="64" viewBox="0 0 64 64"><path d="M6 32c8-13 17-19 26-19s18 6 26 19c-8 13-17 19-26 19S14 45 6 32z" fill="none" stroke="#1e2b2a" stroke-width="4" stroke-linejoin="round" /><circle cx="32" cy="32" r="9" fill="#a94c26" /></svg></div><div class="pc-role">子女</div><div class="pc-line"><span class="ln">每一次照护，</span><span class="ln">都看得见。</span></div></div>
+          <div class="pcard" id="pc2"><div class="pc-top"><span class="pc-n">02</span><svg width="64" height="64" viewBox="0 0 64 64"><path d="M8 30L32 10l24 20v24H8z" fill="none" stroke="#1e2b2a" stroke-width="4" stroke-linejoin="round" /><path d="M32 46s-10-6-10-12a5.5 5.5 0 0 1 10-3 5.5 5.5 0 0 1 10 3c0 6-10 12-10 12z" fill="#a94c26" /></svg></div><div class="pc-role">老人</div><div class="pc-line"><span class="ln">照护更用心，</span><span class="ln">护理员自己选。</span></div></div>
+          <div class="pcard" id="pc3"><div class="pc-top"><span class="pc-n">03</span><svg width="64" height="64" viewBox="0 0 64 64"><rect x="8" y="12" width="48" height="44" rx="6" fill="none" stroke="#1e2b2a" stroke-width="4" /><path d="M8 24h48M20 6v10M44 6v10" stroke="#1e2b2a" stroke-width="4" stroke-linecap="round" /><path d="M22 40l7 7 13-14" fill="none" stroke="#a94c26" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" /></svg></div><div class="pc-role">护理员</div><div class="pc-line"><span class="ln">订单更多，</span><span class="ln">收入更多。</span></div></div>
+        </div>
+      </section>
+
+      <!-- ===== Scene 11: why now ===== -->
+      <section id="market" class="clip" data-start="34.35" data-duration="3.35" data-track-index="13">
+        <div class="col3">
+          <div class="kicker" id="k11"><span class="kdot"></span>为什么是现在</div>
+          <h1 class="hl" id="h11">婴儿潮一代正在变老，</h1>
+          <p class="sub" id="s11">上门照护的需求，只会越来越大。</p>
+        </div>
+        <div class="street" id="street" data-layout-ignore>
+          <div class="ground" id="ground"></div>
+          <div class="houses"><div class="house" id="hs0"><svg viewBox="0 0 124 150"><circle class="pin" cx="62" cy="12" r="11" fill="#a94c26" /><path d="M8 72L62 30l54 42z" fill="#55615e" /><rect x="20" y="68" width="84" height="80" fill="#fffcf7" stroke="#1e2b2a" stroke-width="4" /><rect x="52" y="108" width="20" height="40" fill="#1e2b2a" opacity="0.8" /><rect class="win" x="30" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /><rect class="win" x="72" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /></svg></div><div class="house" id="hs1"><svg viewBox="0 0 124 150"><circle class="pin" cx="62" cy="12" r="11" fill="#a94c26" /><path d="M8 72L62 30l54 42z" fill="#6f8d84" /><rect x="20" y="68" width="84" height="80" fill="#fffcf7" stroke="#1e2b2a" stroke-width="4" /><rect x="52" y="108" width="20" height="40" fill="#1e2b2a" opacity="0.8" /><rect class="win" x="30" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /><rect class="win" x="72" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /></svg></div><div class="house" id="hs2"><svg viewBox="0 0 124 150"><circle class="pin" cx="62" cy="12" r="11" fill="#a94c26" /><path d="M8 72L62 30l54 42z" fill="#b4795c" /><rect x="20" y="68" width="84" height="80" fill="#fffcf7" stroke="#1e2b2a" stroke-width="4" /><rect x="52" y="108" width="20" height="40" fill="#1e2b2a" opacity="0.8" /><rect class="win" x="30" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /><rect class="win" x="72" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /></svg></div><div class="house" id="hs3"><svg viewBox="0 0 124 150"><circle class="pin" cx="62" cy="12" r="11" fill="#a94c26" /><path d="M8 72L62 30l54 42z" fill="#55615e" /><rect x="20" y="68" width="84" height="80" fill="#fffcf7" stroke="#1e2b2a" stroke-width="4" /><rect x="52" y="108" width="20" height="40" fill="#1e2b2a" opacity="0.8" /><rect class="win" x="30" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /><rect class="win" x="72" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /></svg></div><div class="house" id="hs4"><svg viewBox="0 0 124 150"><circle class="pin" cx="62" cy="12" r="11" fill="#a94c26" /><path d="M8 72L62 30l54 42z" fill="#6f8d84" /><rect x="20" y="68" width="84" height="80" fill="#fffcf7" stroke="#1e2b2a" stroke-width="4" /><rect x="52" y="108" width="20" height="40" fill="#1e2b2a" opacity="0.8" /><rect class="win" x="30" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /><rect class="win" x="72" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /></svg></div><div class="house" id="hs5"><svg viewBox="0 0 124 150"><circle class="pin" cx="62" cy="12" r="11" fill="#a94c26" /><path d="M8 72L62 30l54 42z" fill="#b4795c" /><rect x="20" y="68" width="84" height="80" fill="#fffcf7" stroke="#1e2b2a" stroke-width="4" /><rect x="52" y="108" width="20" height="40" fill="#1e2b2a" opacity="0.8" /><rect class="win" x="30" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /><rect class="win" x="72" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /></svg></div><div class="house" id="hs6"><svg viewBox="0 0 124 150"><circle class="pin" cx="62" cy="12" r="11" fill="#a94c26" /><path d="M8 72L62 30l54 42z" fill="#55615e" /><rect x="20" y="68" width="84" height="80" fill="#fffcf7" stroke="#1e2b2a" stroke-width="4" /><rect x="52" y="108" width="20" height="40" fill="#1e2b2a" opacity="0.8" /><rect class="win" x="30" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /><rect class="win" x="72" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /></svg></div><div class="house" id="hs7"><svg viewBox="0 0 124 150"><circle class="pin" cx="62" cy="12" r="11" fill="#a94c26" /><path d="M8 72L62 30l54 42z" fill="#6f8d84" /><rect x="20" y="68" width="84" height="80" fill="#fffcf7" stroke="#1e2b2a" stroke-width="4" /><rect x="52" y="108" width="20" height="40" fill="#1e2b2a" opacity="0.8" /><rect class="win" x="30" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /><rect class="win" x="72" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /></svg></div><div class="house" id="hs8"><svg viewBox="0 0 124 150"><circle class="pin" cx="62" cy="12" r="11" fill="#a94c26" /><path d="M8 72L62 30l54 42z" fill="#b4795c" /><rect x="20" y="68" width="84" height="80" fill="#fffcf7" stroke="#1e2b2a" stroke-width="4" /><rect x="52" y="108" width="20" height="40" fill="#1e2b2a" opacity="0.8" /><rect class="win" x="30" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /><rect class="win" x="72" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /></svg></div><div class="house" id="hs9"><svg viewBox="0 0 124 150"><circle class="pin" cx="62" cy="12" r="11" fill="#a94c26" /><path d="M8 72L62 30l54 42z" fill="#55615e" /><rect x="20" y="68" width="84" height="80" fill="#fffcf7" stroke="#1e2b2a" stroke-width="4" /><rect x="52" y="108" width="20" height="40" fill="#1e2b2a" opacity="0.8" /><rect class="win" x="30" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /><rect class="win" x="72" y="82" width="22" height="20" fill="#e6ddcf" stroke="#1e2b2a" stroke-width="3" /></svg></div></div>
+        </div>
+      </section>
+
+      <!-- ===== Scene 12: outro ===== -->
+      <section id="outro" class="clip" data-start="37.6" data-duration="3.9" data-track-index="8">
+        <div class="lockup">
+          <div class="wm-row" id="wmRow"><span class="wm bn" id="wm">安见</span><span class="wm-dot" id="wmDot"></span></div>
+          <div class="wm-latin bl" id="wmLatin">KINSIGHT</div>
+          <div class="tagline" id="tagline">看得见的照护。</div>
+          <div class="small" id="small">持牌上门养老服务平台</div>
+        </div>
+      </section>
+
+      <!-- ===== audio ===== -->
+      <audio
+        id="music"
+        src="assets/music/happy-beats-business-moves-vol-12-by-ende-dot-app.mp3"
+        data-start="0"
+        data-duration="41.5"
+        data-track-index="10"
+        data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.5,&quot;v&quot;:0.32},{&quot;t&quot;:39.9,&quot;v&quot;:0.32},{&quot;t&quot;:41.5,&quot;v&quot;:0}]}]}"
+      ></audio>
+      <audio id="sfx-land" src="assets/sfx/impact/impactSoft_medium_001.ogg" data-start="7.0" data-duration="0.18" data-track-index="31" data-volume="0.5"></audio>
+      <audio id="sfx-clip1" src="assets/sfx/interface/click_003.ogg" data-start="10.91" data-duration="0.05" data-track-index="32" data-volume="0.42"></audio>
+      <audio id="sfx-clip2" src="assets/sfx/interface/click_003.ogg" data-start="11.44" data-duration="0.05" data-track-index="33" data-volume="0.42"></audio>
+      <audio id="sfx-clip3" src="assets/sfx/interface/click_003.ogg" data-start="12.0" data-duration="0.05" data-track-index="34" data-volume="0.42"></audio>
+      <audio id="sfx-tapB" src="assets/sfx/interface/click_002.ogg" data-start="14.18" data-duration="0.05" data-track-index="35" data-volume="0.5"></audio>
+      <audio id="sfx-send" src="assets/sfx/ui/click2.ogg" data-start="17.45" data-duration="0.06" data-track-index="36" data-volume="0.5"></audio>
+      <audio id="sfx-reply" src="assets/sfx/interface/bong_001.ogg" data-start="18.02" data-duration="0.12" data-track-index="37" data-volume="0.3"></audio>
+      <audio id="sfx-tap" src="assets/sfx/interface/click_002.ogg" data-start="21.82" data-duration="0.05" data-track-index="38" data-volume="0.5"></audio>
+      <audio id="sfx-order" src="assets/sfx/interface/bong_001.ogg" data-start="27.28" data-duration="0.12" data-track-index="39" data-volume="0.28"></audio>
+      <audio id="sfx-logo" src="assets/sfx/impact/impactBell_heavy_003.ogg" data-start="38.16" data-duration="0.65" data-track-index="40" data-volume="0.5"></audio>
+    </div>
+
+    <script>
+      (function () {
+        // ---- variables: brand names (placeholders) ----
+        var vars = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) || {};
+        var brandName = vars.brandName || "安见";
+        var brandLatin = vars.brandLatin || "KINSIGHT";
+        document.querySelectorAll(".bn").forEach(function (n) { n.textContent = brandName; });
+        document.querySelectorAll(".bl").forEach(function (n) { n.textContent = brandLatin; });
+
+        // ---- static construction (before timeline build) ----
+        // Hook ruler: 7 hour ticks, 09:00..15:00
+        var ticks = document.getElementById("rTicks");
+        var hours = document.getElementById("rHours");
+        for (var h = 0; h <= 6; h++) {
+          var pct = (h / 6) * 100 + "%";
+          var t = document.createElement("div");
+          t.className = "r-tick";
+          t.style.left = pct;
+          ticks.appendChild(t);
+          var l = document.createElement("div");
+          l.className = "r-hour";
+          l.style.left = pct;
+          l.textContent = (h + 9 < 10 ? "0" : "") + (h + 9) + ":00";
+          hours.appendChild(l);
+        }
+        // Star rows on caregiver cards (no rating numbers on purpose)
+        var STAR = '<svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.3 5.9.9-4.25 4.1 1 5.8L10 14.9l-5.25 2.7 1-5.8L1.5 7.7l5.9-.9z" fill="#a94c26"/></svg>';
+        document.querySelectorAll(".stars").forEach(function (n) {
+          n.innerHTML = STAR + STAR + STAR + STAR + STAR;
+        });
+        // Live-feed illustration reused as the screen-A thumbnail (ids stripped so they stay unique)
+        var feedClone = document.getElementById("feedSvg").cloneNode(true);
+        feedClone.removeAttribute("id");
+        feedClone.querySelectorAll("[id]").forEach(function (n) { n.removeAttribute("id"); });
+        var thumbA = document.getElementById("thumbA");
+        thumbA.insertBefore(feedClone, thumbA.firstChild);
+        // Typed message, one span per character
+        var MSG = "请提醒妈妈多喝点水。";
+        var typed = document.getElementById("typed");
+        for (var i = 0; i < MSG.length; i++) {
+          var s = document.createElement("span");
+          s.className = "ch";
+          s.textContent = MSG[i];
+          typed.appendChild(s);
+        }
+
+        // ---- audio-reactive + clock readouts, a pure function of frame ----
+        var AD = window.AUDIO_DATA || { rms: [], bass: [], totalFrames: 0 };
+        var glow = document.getElementById("glow");
+        var recDots = document.querySelectorAll(".recdot, .recdot2");
+        var tcA = document.getElementById("tcA");
+        var tcC = document.getElementById("tcC");
+        var plTime = document.getElementById("plTime");
+        function clock(base, secs) {
+          var s = base + Math.floor(secs);
+          var hh = Math.floor(s / 3600), mm = Math.floor((s % 3600) / 60), ss = s % 60;
+          return (hh < 10 ? "0" : "") + hh + ":" + (mm < 10 ? "0" : "") + mm + ":" + (ss < 10 ? "0" : "") + ss;
+        }
+        function draw(f) {
+          var r = AD.rms[f] || 0;
+          var b = AD.bass[f] || 0;
+          gsap.set(glow, { scale: 1 + 0.07 * b, opacity: 0.72 + 0.28 * r });
+          gsap.set(recDots, { scale: 1 + 0.35 * r });
+          var secs = f / 30;
+          tcA.textContent = clock(9 * 3600 + 42 * 60 + 15, secs - 6.5);
+          tcC.textContent = clock(11 * 3600 + 42 * 60 + 8, Math.max(0, secs - 16.93));
+          var ps = 8 + Math.floor(Math.max(0, secs - 14.4));
+          plTime.textContent = "0:" + (ps < 10 ? "0" : "") + ps + " / 1:10";
+        }
+
+        function build() {
+          var tl = gsap.timeline({ paused: true });
+          var E3 = "power3.out", E2 = "power2.out", IO = "power2.inOut", IN = "power2.in";
+          var DUR = 41.5;
+          var RW = 1640; // ruler width
+          var W = 384; // highlights track width
+          var PB = 352; // player bar width
+
+          function capIn(k, h, s, m, t) {
+            tl.fromTo(k, { x: -24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.45, ease: E3 }, t);
+            tl.fromTo(h, { y: 44, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.55, ease: E3 }, t + 0.06);
+            if (s) tl.fromTo(s, { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.55, ease: E3 }, t + 0.3);
+            if (m) tl.fromTo(m, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: E2 }, t + 0.45);
+          }
+          function capOut(list, t) {
+            tl.to(list, { y: -24, autoAlpha: 0, duration: 0.25, ease: IN, stagger: 0.03 }, t);
+          }
+          function scrIn(id, t) {
+            tl.fromTo(id, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, ease: "none" }, t);
+          }
+          function scrOut(id, t) {
+            tl.to(id, { y: -16, autoAlpha: 0, duration: 0.22, ease: IN }, t);
+          }
+          function itemsIn(sel, t) {
+            tl.fromTo(sel, { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: E3, stagger: 0.07 }, t);
+          }
+
+          // ---------- persistent decor ----------
+          tl.fromTo("#grain", { x: 0, y: 0 }, { x: -150, y: -100, duration: DUR, ease: "none" }, 0);
+          tl.fromTo("#ring", { rotation: 0 }, { rotation: 60, duration: DUR, ease: "none" }, 0);
+          var proxy = { p: 0 };
+          tl.to(proxy, {
+            p: 1,
+            duration: DUR,
+            ease: "none",
+            onUpdate: function () {
+              draw(Math.max(0, Math.min((AD.totalFrames || 1245) - 1, Math.floor(tl.time() * 30 + 1e-4))));
+            },
+          }, 0);
+          tl.fromTo(".steam", { y: 0, autoAlpha: 0.8 }, { y: -12, autoAlpha: 0, duration: 1.5, ease: "sine.out", repeat: Math.max(0, Math.floor(DUR / 1.5) - 1), stagger: 0.45 }, 0);
+
+          // ---------- 1 hook (0 – 3.27) ----------
+          tl.fromTo("#h1a", { y: 50, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: E3 }, 0.12);
+          tl.fromTo("#h1b", { y: 50, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: E3 }, 0.32);
+          tl.fromTo("#rLine", { scaleX: 0 }, { scaleX: 1, duration: 1.0, ease: IO }, 0.2);
+          tl.fromTo(".r-tick", { scaleY: 0, autoAlpha: 0 }, { scaleY: 1, autoAlpha: 1, duration: 0.3, ease: E2, stagger: 0.09 }, 0.35);
+          tl.fromTo(".r-hour", { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: E2, stagger: 0.09 }, 0.42);
+          tl.fromTo("#rBracket", { scaleX: 0.92, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 0.7, duration: 0.5, ease: E3 }, 0.8);
+          tl.fromTo("#rLabel", { x: -24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.5, ease: E3 }, 0.9);
+          // the playhead keeps moving: care is happening, unseen
+          tl.fromTo("#rHead", { x: 0, autoAlpha: 0 }, { x: RW / 6, autoAlpha: 1, duration: 2.75, ease: "none" }, 0.25);
+          tl.to("#rHead", { x: RW * 0.27, duration: 3.4, ease: "none" }, 3.0);
+          tl.to(["#h1a", "#h1b"], { y: -40, autoAlpha: 0, duration: 0.3, ease: IN, stagger: 0.05 }, 2.98);
+
+          // ---------- 2 problem (3.27 – 6.56) ----------
+          tl.fromTo("#hP", { y: 50, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: E3 }, 3.3);
+          tl.fromTo("#sP", { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.55, ease: E3 }, 3.6);
+          tl.fromTo("#rUnseen", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: IO }, 3.5);
+          tl.fromTo("#rUnseenL", { y: 10, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.45, ease: E2 }, 4.0);
+          tl.to(["#hP", "#sP"], { y: -40, autoAlpha: 0, duration: 0.3, ease: IN, stagger: 0.05 }, 6.28);
+          tl.to("#ruler", { y: 40, autoAlpha: 0, duration: 0.35, ease: IN }, 6.3);
+
+          // ---------- 3 reveal (6.56 – 9.83) ----------
+          tl.fromTo("#k2", { x: -24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.45, ease: E3 }, 6.62);
+          tl.fromTo("#h2a", { y: 44, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.55, ease: E3 }, 6.68);
+          tl.fromTo("#h2b", { y: 44, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.55, ease: E3 }, 6.84);
+          tl.fromTo("#m2", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: E2 }, 7.05);
+          // phone rises and lands on the 7.09 beat (SFX 7.0)
+          tl.fromTo("#bezel", { y: 180, rotation: 3, autoAlpha: 0 }, { y: 0, rotation: 0, autoAlpha: 1, duration: 0.6, ease: E3 }, 6.52);
+          tl.fromTo(["#bkTL", "#bkTR", "#bkBL", "#bkBR"], { scale: 1.25, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, ease: E3, stagger: 0.04 }, 6.9);
+          itemsIn("#scrA .a-in", 6.95);
+          capOut(["#k2", "#h2a", "#h2b", "#m2"], 9.58);
+          scrOut("#scrA", 9.62);
+
+          // ---------- 4 AI highlights (9.83 – 13.64) ----------
+          capIn("#k3", "#h3", "#s3", "#m3", 9.86);
+          scrIn("#scrB", 9.84);
+          itemsIn("#scrB .b-in", 9.86);
+          tl.fromTo("#tlSweep", { x: 0, autoAlpha: 0 }, { autoAlpha: 1, duration: 0.15, ease: "none" }, 10.3);
+          // beat-grid: the sweep reaches each marker as its clip lands (10.93 / 11.46 / 12.02)
+          tl.to("#tlSweep", { keyframes: [
+            { x: W * 0.033, duration: 0.63, ease: "none" },
+            { x: W * 0.514, duration: 0.53, ease: "none" },
+            { x: W * 0.944, duration: 0.56, ease: "none" },
+            { x: W, duration: 0.18, ease: "none" },
+          ] }, 10.3);
+          tl.to("#tlSweep", { autoAlpha: 0, duration: 0.25, ease: "none" }, 12.3);
+          tl.fromTo("#tlFill", { scaleX: 0 }, { keyframes: [
+            { scaleX: 0.033, duration: 0.63, ease: "none" },
+            { scaleX: 0.514, duration: 0.53, ease: "none" },
+            { scaleX: 0.944, duration: 0.56, ease: "none" },
+            { scaleX: 1, duration: 0.18, ease: "none" },
+          ] }, 10.3);
+          [["#mk1", "#cc1", 10.93], ["#mk2", "#cc2", 11.46], ["#mk3", "#cc3", 12.02]].forEach(function (m) {
+            tl.fromTo(m[0], { scale: 0 }, { scale: 1, duration: 0.35, ease: "back.out(2.4)" }, m[2] - 0.03);
+            tl.fromTo(m[1], { y: 34, autoAlpha: 0, scale: 0.96 }, { y: 0, autoAlpha: 1, scale: 1, duration: 0.45, ease: E3 }, m[2] - 0.05);
+          });
+          tl.fromTo("#count", { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, 12.2);
+          tl.fromTo("#fullRec", { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: E3 }, 12.35);
+          capOut(["#k3", "#h3", "#s3", "#m3"], 13.4);
+
+          // ---------- 5 rewatch (13.64 – 16.93) ----------
+          capIn("#kR", "#hR", "#sR", "#mR", 13.68);
+          tl.fromTo("#tapB", { x: 60, y: 160, autoAlpha: 0, scale: 1 }, { x: 0, y: 0, autoAlpha: 1, duration: 0.45, ease: IO }, 13.65);
+          // tap -- beat-grid: 14.20
+          tl.to("#tapB", { scale: 0.82, duration: 0.08, ease: IN }, 14.12);
+          tl.to("#tapB", { scale: 1, autoAlpha: 0, duration: 0.3, ease: E2 }, 14.21);
+          tl.fromTo("#rippleB", { scale: 0.3, autoAlpha: 0.8 }, { scale: 1.8, autoAlpha: 0, duration: 0.6, ease: E2 }, 14.2);
+          tl.set("#rippleB", { autoAlpha: 0 }, 0);
+          tl.to("#cc2", { backgroundColor: "#f4e3d9", duration: 0.15, ease: "none" }, 14.2);
+          tl.to("#scrB", { x: -40, autoAlpha: 0, duration: 0.25, ease: IN }, 14.32);
+          tl.fromTo("#scrG", { x: 60, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.4, ease: E3 }, 14.38);
+          itemsIn("#scrG .g-in", 14.42);
+          tl.fromTo("#plFill", { scaleX: 0.11 }, { scaleX: 0.62, duration: 2.4, ease: "none" }, 14.5);
+          tl.fromTo("#plKnob", { x: PB * 0.11 }, { x: PB * 0.62, duration: 2.4, ease: "none" }, 14.5);
+          tl.fromTo("#tag1", { y: -10, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: E3 }, 14.75);
+          tl.fromTo("#tag2", { y: -10, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: E3 }, 15.29);
+          tl.fromTo(["#key1", "#key2", "#key3"], { x: 30, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.4, ease: E3, stagger: 0.3 }, 14.9);
+          capOut(["#kR", "#hR", "#sR", "#mR"], 16.68);
+          scrOut("#scrG", 16.72);
+
+          // ---------- 6 live (16.93 – 20.19) ----------
+          capIn("#k4", "#h4", "#s4", "#m4", 16.97);
+          scrIn("#scrC", 16.94);
+          itemsIn("#scrC .c-in", 16.96);
+          tl.fromTo("#feed", { scale: 0.97 }, { scale: 1, duration: 0.6, ease: E3 }, 17.0);
+          tl.to("#ph", { autoAlpha: 0, duration: 0.1, ease: "none" }, 16.98);
+          tl.fromTo("#caret", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01 }, 16.99);
+          tl.fromTo("#typed .ch", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, ease: "none", stagger: 0.04 }, 17.02);
+          // send -- beat-grid: 17.47 (strong cue)
+          tl.to(["#typed", "#caret"], { autoAlpha: 0, duration: 0.12, ease: "none" }, 17.45);
+          tl.to("#ph", { autoAlpha: 1, duration: 0.25, ease: "none" }, 17.7);
+          tl.fromTo("#msgMe", { y: 24, autoAlpha: 0, scale: 0.94 }, { y: 0, autoAlpha: 1, scale: 1, duration: 0.35, ease: E3 }, 17.47);
+          tl.fromTo("#typing", { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.2, ease: E2 }, 17.6);
+          tl.fromTo("#typing i", { y: 0 }, { y: -6, duration: 0.16, ease: "sine.inOut", yoyo: true, repeat: 1, stagger: 0.07 }, 17.66);
+          tl.to("#typing", { autoAlpha: 0, duration: 0.1, ease: "none" }, 17.98);
+          // reply -- beat-grid: 18.02
+          tl.fromTo("#reply", { y: 18, autoAlpha: 0, scale: 0.95 }, { y: 0, autoAlpha: 1, scale: 1, duration: 0.35, ease: E3 }, 18.02);
+          tl.fromTo("#glass", { x: 90, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.6, ease: E3 }, 18.4);
+          capOut(["#k4", "#h4", "#s4", "#m4"], 19.95);
+          scrOut("#scrC", 19.98);
+
+          // ---------- 7 booking (20.19 – 23.46) ----------
+          capIn("#k5", "#h5", "#s5", "#m5", 20.22);
+          scrIn("#scrD", 20.2);
+          itemsIn("#scrD .d-in", 20.22);
+          tl.fromTo(["#g1", "#g2", "#g3"], { x: 60, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.45, ease: E3, stagger: 0.12 }, 20.36);
+          tl.fromTo("#tap", { x: 40, y: 250, autoAlpha: 0, scale: 1 }, { x: 0, y: 0, autoAlpha: 1, duration: 0.5, ease: IO }, 21.25);
+          // tap -- beat-grid: 21.84
+          tl.to("#tap", { scale: 0.82, duration: 0.08, ease: IN }, 21.76);
+          tl.to("#tap", { scale: 1, autoAlpha: 0, duration: 0.3, ease: E2 }, 21.85);
+          tl.fromTo("#ripple", { scale: 0.3, autoAlpha: 0.8 }, { scale: 1.8, autoAlpha: 0, duration: 0.6, ease: E2 }, 21.84);
+          tl.set("#ripple", { autoAlpha: 0 }, 0);
+          tl.to("#g1", { borderColor: "#a94c26", backgroundColor: "#f4e3d9", duration: 0.2, ease: "none" }, 21.84);
+          tl.to("#chip1", { backgroundColor: "#1e2b2a", borderColor: "#1e2b2a", color: "#fffcf7", duration: 0.2, ease: "none" }, 21.84);
+          tl.fromTo("#toast", { y: 110, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: E3 }, 21.95);
+          capOut(["#k5", "#h5", "#s5", "#m5"], 23.22);
+          scrOut("#scrD", 23.25);
+
+          // ---------- 8 checkups (23.46 – 26.74) ----------
+          capIn("#k6", "#h6", "#s6", "#m6", 23.5);
+          scrIn("#scrE", 23.48);
+          itemsIn("#scrE .e-in", 23.5);
+          tl.fromTo(".f1", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: E2, stagger: 0.06 }, 23.65);
+          tl.fromTo("#ck2", { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: E3 }, 23.9);
+          tl.fromTo(".was", { autoAlpha: 0 }, { autoAlpha: 0.55, duration: 0.3, ease: "none" }, 24.0);
+          tl.fromTo(".f2", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: IO, stagger: 0.06 }, 24.0);
+          // beat-locked: 24.56s (strong cue) -- progress report lands
+          tl.fromTo("#report", { y: 24, autoAlpha: 0, scale: 0.92 }, { y: 0, autoAlpha: 1, scale: 1, duration: 0.4, ease: "back.out(1.8)" }, 24.5);
+          capOut(["#k6", "#h6", "#s6", "#m6"], 26.5);
+          scrOut("#scrE", 26.52);
+
+          // ---------- 9 caregivers (26.74 – 30.01) ----------
+          capIn("#kC", "#hC", "#sC", "#mC", 26.78);
+          scrIn("#scrF", 26.76);
+          itemsIn("#scrF .f-in", 26.78);
+          // beat-locked: 27.30s (strong cue) -- a new order arrives
+          tl.fromTo("#banner", { y: -90, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.45, ease: E3 }, 27.26);
+          tl.fromTo("#o3", { x: 60, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.45, ease: E3 }, 27.3);
+          tl.to("#d3", { backgroundColor: "#a94c26", borderColor: "#a94c26", duration: 0.25, ease: "none" }, 27.3);
+          // beat-grid: second order 28.37
+          tl.fromTo("#o4", { x: 60, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.45, ease: E3 }, 28.37);
+          tl.to("#d6", { backgroundColor: "#a94c26", borderColor: "#a94c26", duration: 0.25, ease: "none" }, 28.37);
+          capOut(["#kC", "#hC", "#sC", "#mC"], 29.6);
+          tl.to("#bezel", { y: -60, scale: 0.94, autoAlpha: 0, duration: 0.4, ease: IN }, 29.6);
+          tl.to(["#bkTL", "#bkTR", "#bkBL", "#bkBR"], { scale: 1.15, autoAlpha: 0, duration: 0.35, ease: IN }, 29.62);
+          // decor recentres for the full-frame scenes and the outro
+          var DX = 960 - 1420;
+          tl.to(["#glow", "#ring"], { x: DX, duration: 0.8, ease: IO }, 29.75);
+          tl.to("#ring", { scale: 0.86, duration: 0.8, ease: IO }, 29.75);
+
+          // ---------- 10 three parties (30.01 – 34.38) ----------
+          tl.fromTo("#k10", { x: -24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.45, ease: E3 }, 30.06);
+          tl.fromTo("#h10", { y: 44, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.55, ease: E3 }, 30.12);
+          // beat-grid: cards 31.10 / 31.65 / 32.19
+          [["#pc1", 31.1], ["#pc2", 31.65], ["#pc3", 32.19]].forEach(function (c) {
+            tl.fromTo(c[0], { y: 60, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: E3 }, c[1] - 0.05);
+          });
+          tl.to(["#k10", "#h10"], { y: -24, autoAlpha: 0, duration: 0.25, ease: IN, stagger: 0.03 }, 34.1);
+          tl.to(["#pc1", "#pc2", "#pc3"], { y: -30, autoAlpha: 0, duration: 0.3, ease: IN, stagger: 0.05 }, 34.06);
+
+          // ---------- 11 why now (34.38 – 37.65) ----------
+          tl.fromTo("#k11", { x: -24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.45, ease: E3 }, 34.42);
+          tl.fromTo("#h11", { y: 44, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.55, ease: E3 }, 34.48);
+          tl.fromTo("#s11", { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.55, ease: E3 }, 34.78);
+          tl.fromTo("#ground", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: IO }, 34.45);
+          tl.fromTo(".house", { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.45, ease: E3, stagger: 0.05 }, 34.5);
+          tl.set(".pin", { scale: 0, transformOrigin: "50% 50%" }, 0);
+          // beat-grid: homes light up on 35.47 / 36.01 / 36.55 / 37.11 (strong cues)
+          [[[1, 4, 7], 35.47], [[0, 5, 9], 36.01], [[2, 8], 36.55], [[3, 6], 37.11]].forEach(function (g) {
+            g[0].forEach(function (i) {
+              tl.to("#hs" + i + " .win", { fill: "#f2b58a", duration: 0.25, ease: "none" }, g[1]);
+              tl.to("#hs" + i + " .pin", { scale: 1, duration: 0.35, ease: "back.out(2.4)" }, g[1]);
+            });
+          });
+          capOut(["#k11", "#h11", "#s11"], 37.38);
+          tl.to("#street", { y: 30, autoAlpha: 0, duration: 0.3, ease: IN }, 37.4);
+
+          // ---------- 12 outro (37.65 – 41.5) ----------
+          var BK = { bkTL: [590 - 1150, 250 - 40], bkTR: [1274 - 1634, 250 - 40], bkBL: [590 - 1150, 774 - 984], bkBR: [1274 - 1634, 774 - 984] };
+          Object.keys(BK).forEach(function (id, i) {
+            tl.fromTo("#" + id, { x: BK[id][0], y: BK[id][1], scale: 1.2, autoAlpha: 0 }, { x: BK[id][0], y: BK[id][1], scale: 1, autoAlpha: 1, duration: 0.5, ease: E3, immediateRender: false }, 37.7 + i * 0.04);
+          });
+          // beat-locked: 38.20s (strong cue) -- wordmark lands
+          tl.fromTo("#wm", { y: 30, scale: 0.94, autoAlpha: 0 }, { y: 0, scale: 1, autoAlpha: 1, duration: 0.5, ease: E3 }, 38.0);
+          tl.fromTo("#wmDot", { scale: 0 }, { scale: 1, duration: 0.4, ease: "back.out(2.6)" }, 38.2);
+          tl.fromTo("#wmLatin", { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: E2 }, 38.4);
+          tl.fromTo("#tagline", { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: E3 }, 38.65);
+          tl.fromTo("#small", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, ease: E2 }, 39.05);
+          tl.fromTo("#wmRow", { scale: 1 }, { scale: 1.025, duration: 2.9, ease: "sine.inOut" }, 38.6);
+
+          draw(0);
+          window.__timelines["main"] = tl;
+        }
+
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(build);
+        } else {
+          build();
+        }
+      })();
+    </script>
+  </body>
+</html>
