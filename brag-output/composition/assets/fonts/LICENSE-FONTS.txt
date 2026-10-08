@@ -1,0 +1,3 @@
+Noto Serif SC and Noto Sans SC subsets (only the glyphs used in this video),
+downloaded from Google Fonts. Licensed under the SIL Open Font License 1.1:
+https://openfontlicense.org
